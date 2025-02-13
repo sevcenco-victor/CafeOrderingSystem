@@ -2,9 +2,9 @@ using CafeOrderingSystem.Models;
 
 namespace CafeOrderingSystem.Data;
 
-public class MenuDishFactory
+public static class MenuDishFactory
 {
-    private static List<Ingredient> CreateIngredients()
+    public static List<Ingredient> CreateIngredients()
     {
         return new List<Ingredient>
         {
