@@ -3,7 +3,7 @@ namespace CafeOrderingSystem.Models;
 public class Cook
 {
     public string Name { get; private set; }
-
+    public const short MAX_COOK_ORDERS = 5;
     private int _currentOrders;
 
     public int CurrentOrders
@@ -11,7 +11,7 @@ public class Cook
         get => _currentOrders;
         private set
         {
-            if (value <= 5)
+            if (value <= MAX_COOK_ORDERS)
             {
                 _currentOrders = value;
             }
