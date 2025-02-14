@@ -10,21 +10,16 @@ public class CafeService : ICafeService
     private List<Dish> Menu { get; set; }
 
 
-    public CafeService()
+    public CafeService(List<Dish>? menu = null)
     {
-        var cooks = new List<Cook>()
-        {
-            new Cook("Alice"),
-            // new Cook("Bob"),
-            // new Cook("Charlie"),
-        };
+        var cooks = CookFactory.CreateCooks();
 
         foreach (var cook in cooks)
         {
             _cooksQueue.Enqueue(cook, 0);
         }
 
-        Menu = MenuDishFactory.CreateMenuDishes();
+        Menu = menu ?? MenuDishFactory.CreateMenuDishes();
     }
 
     public void ShowMenu()
@@ -49,20 +44,19 @@ public class CafeService : ICafeService
     {
         if (_cooksQueue.Count == 0) return null;
 
-        var cook = _cooksQueue.Dequeue();
+        var cook = _cooksQueue.Peek();
 
-        return cook.CurrentOrders < 5 ? cook : null;
+        return IsCookAvailable(cook) ? cook : null;
     }
 
-    public bool IsCookAvailable()
+    public bool IsCookAvailable(Cook cook)
     {
-        if (_cooksQueue.Count == 0) return false;
-        var cook = _cooksQueue.Dequeue();
-        return cook.CurrentOrders < 5;
+        return cook.CurrentOrders < Cook.MaxCookOrders;
     }
 
     public void AssignOrderToCook(Cook cook, Dish dish)
     {
+        _cooksQueue.Dequeue();
         cook.AssignOrder(dish);
         _cooksQueue.Enqueue(cook, cook.CurrentOrders);
     }

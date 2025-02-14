@@ -1,4 +1,5 @@
 using CafeOrderingSystem.Abstractions;
+using CafeOrderingSystem.Models;
 
 namespace CafeOrderingSystem.Services;
 
@@ -16,16 +17,16 @@ public class OrderService : IOrderService
         var dish = _cafeService.GetDishByName(dishName);
         if (dish == null)
         {
-            return $"Dish not found with name: {dishName}";
+            return DishErrors.DishNotFound(dishName);
         }
 
         var cook = _cafeService.GetAvailableCook();
         if (cook == null)
         {
-            return "No cook available";
+            return CookErrors.CookIsNotAvailable();
         }
 
         _cafeService.AssignOrderToCook(cook, dish);
-        return $"Order placed!, estimated cooking finish time: ~ {cook.GetEstimatedCookingTime()} minutes";
+        return $"\nOrder placed!, estimated cooking finish time: ~ {cook.GetEstimatedCookingTime()} minutes";
     }
 }
