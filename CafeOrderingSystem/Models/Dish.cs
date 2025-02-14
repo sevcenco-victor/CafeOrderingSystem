@@ -2,7 +2,8 @@ namespace CafeOrderingSystem.Models;
 
 public class Dish
 {
-    public string Name { get; set; }
+    public string Name { get; init; }
+
     public string Description { get; set; }
 
     public decimal Price
@@ -10,19 +11,34 @@ public class Dish
         get => Ingredients.Sum(x => x.Price) * 1.20M;
     }
 
-    public int EstimatedCookTime { get; set; }
+    private int _estimateCookingTime;
+
+    public int EstimatedCookingTime
+    {
+        get => _estimateCookingTime;
+        set
+        {
+            if (value < 0)
+            {
+                throw new ArgumentException("Estimated cooking time cannot be less than 0");
+            }
+
+            _estimateCookingTime = value;
+        }
+    }
+
     public List<Ingredient> Ingredients { get; set; }
 
     public Dish()
     {
     }
 
-    public Dish(string name, string description, int estimatedCookTime,
+    public Dish(string name, string description, int estimatedCookingTime,
         List<Ingredient> ingredients)
     {
         Name = name;
         Description = description;
-        EstimatedCookTime = estimatedCookTime;
+        EstimatedCookingTime = estimatedCookingTime;
         Ingredients = ingredients;
     }
 
@@ -31,6 +47,24 @@ public class Dish
         return
             $"{Name} \t {Description} \t" +
             $"{string.Join(", ", Ingredients.Select(i => i.Name))} \t" +
-            $"{Price}";
+            $"{Price:C}";
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is Dish dish)
+        {
+            return Name.Equals(dish.Name)
+                   && Description.Equals(dish.Description)
+                   && EstimatedCookingTime == dish.EstimatedCookingTime
+                   && Ingredients.SequenceEqual(dish.Ingredients);
+        }
+
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Name);
     }
 }
