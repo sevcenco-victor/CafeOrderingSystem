@@ -27,6 +27,6 @@ public class OrderService : IOrderService
         }
 
         _cafeService.AssignOrderToCook(cook, dish);
-        return $"Order placed!, estimated cooking finish time: ~ {cook.GetEstimatedCookingTime()} minutes";
+        return $"\nOrder placed!, estimated cooking finish time: ~ {cook.GetEstimatedCookingTime()} minutes";
     }
 }
