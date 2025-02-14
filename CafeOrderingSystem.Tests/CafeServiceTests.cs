@@ -72,10 +72,11 @@ public class CafeServiceTests
         {
             Name = "Test",
             Description = "Test",
-            EstimatedCookTime = 2,
-            Ingredients = new List<Ingredient>()
+            EstimatedCookingTime = 2,
+            Ingredients = MenuDishFactory.CreateIngredients()
         };
-        for (int i = 0; i < Cook.MAX_COOK_ORDERS; i++)
+
+        for (int i = 0; i < Cook.MaxCookOrders; i++)
         {
             _cafeService.AssignOrderToCook(cook, mockDish);
         }
