@@ -51,7 +51,7 @@ public class CafeService : ICafeService
 
     public bool IsCookAvailable(Cook cook)
     {
-        return cook.CurrentOrders < Cook.MAX_COOK_ORDERS;
+        return cook.CurrentOrders < Cook.MaxCookOrders;
     }
 
     public void AssignOrderToCook(Cook cook, Dish dish)
